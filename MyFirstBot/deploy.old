@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Get the name of the current directory
+current_dir_name=$(basename "$PWD")
+
+# Get the current user
+current_user=$(whoami)
+
+# Define destination path
+destination_path="/c/Users/$current_user/Documents/cAlgo/Sources/Robots/$current_dir_name"
+
+# Create destination directory if it doesn't exist
+mkdir -p "$destination_path"
+
+# Copy all files and directories except bin and obj
+shopt -s extglob
+cp -r !(bin|obj|deploy) "$destination_path"
+shopt -u extglob
+
+# Print completion message
+echo "Files copied to $destination_path"
+
+# Change directory to the destination and run dotnet build
+cd "$destination_path" || exit
+dotnet build
